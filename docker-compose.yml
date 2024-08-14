@@ -1,0 +1,27 @@
+services:
+  hypnos:
+    container_name: hypnos-app
+    build: .
+    ports:
+      - 4646:4646
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./playbook:/hypnos/playbook
+      - ./deployments:/hypnos/deployments/
+      - ./apps:/hypnos/apps
+      - hypnos-gh:/root/.config/
+      - hypnos-ssh:/root/.ssh
+
+    networks:
+      - hypnos-network
+
+    working_dir: /hypnos
+    command: python3 src/webhook.py
+
+volumes:
+  hypnos-gh:
+  hypnos-ssh:
+  hypnos-apps:
+
+networks:
+  hypnos-network:
